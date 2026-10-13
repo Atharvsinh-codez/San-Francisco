@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.context/
+*.log
+.DS_Store
+
+# local capture / verification output
+*.h264
+*.mp4
+rec-test-*.jpg
+verify-*.png
+
+# local agent tooling
+.agents/
+.claude/
+skills-lock.json
+rec-frames/
+rec-test-*.jpg
+verify-shot*.jpg
+
+# downloaded by scripts/record-showcase.mjs
+public/assets/takram/atmosphere/

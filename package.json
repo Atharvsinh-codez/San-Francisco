@@ -1,0 +1,41 @@
+{
+  "name": "sf-3d",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "bake:all": "tsx tools/bakeAll.ts",
+    "bake:terrain": "tsx tools/terrain.ts",
+    "bake:buildings": "tsx tools/buildings.ts",
+    "bake:roads": "tsx tools/roads.ts",
+    "bake:landuse": "tsx tools/landuse_water.ts",
+    "bake:labels": "tsx tools/labels.ts",
+    "bake:imagery": "tsx tools/imagery.ts",
+    "bake:landmarks": "tsx tools/landmarks.ts"
+  },
+  "dependencies": {
+    "@takram/three-atmosphere": "^0.19.1",
+    "@takram/three-clouds": "^0.7.6",
+    "@takram/three-geospatial": "^0.9.1",
+    "@takram/three-geospatial-effects": "^0.6.4",
+    "earcut": "^3.0.1",
+    "lil-gui": "^0.21.0",
+    "n8ao": "^2.0.1",
+    "postprocessing": "^6.39.5",
+    "three": "^0.173.0"
+  },
+  "devDependencies": {
+    "@types/earcut": "^2.1.4",
+    "@types/node": "^22.10.2",
+    "@types/pngjs": "^6.0.5",
+    "@types/three": "^0.173.0",
+    "jpeg-js": "^0.4.4",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}

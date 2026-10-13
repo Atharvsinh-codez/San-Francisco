@@ -1,0 +1,20 @@
+{
+  "core": {
+    "gridSize": 513,
+    "minX": -10500,
+    "maxX": 9500,
+    "minZ": -11000,
+    "maxZ": 9000,
+    "minElev": -114.2991424036681,
+    "maxElev": 340.30812877230306,
+    "file": "terrain/core_dem.bin"
+  },
+  "far": {
+    "gridSize": 257,
+    "minX": -40000,
+    "maxX": 40000,
+    "minZ": -40000,
+    "maxZ": 40000,
+    "file": "terrain/far_dem.bin"
+  }
+}

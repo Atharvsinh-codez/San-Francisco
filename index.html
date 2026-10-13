@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!--
+      Made by Atharvsinh Jadav
+      Portfolio - athrix.me
+      X - https://x.com/athrix_codes
+    -->
+    <meta name="author" content="Atharvsinh Jadav" />
+    <title>SF 3D | San Francisco Real-Time 3D Explorer</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div hidden>
+      Made by Atharvsinh Jadav
+      Portfolio - athrix.me
+      X - https://x.com/athrix_codes
+    </div>
+    <div id="loading-overlay" role="status" aria-live="polite">
+      <div class="ld-top">
+        <span class="ld-mark">SF 3D</span>
+        <span class="ld-coords">37°49′12″N&ensp;122°28′42″W</span>
+      </div>
+      <div class="ld-hero">
+        <h1 class="ld-title">San Francisco</h1>
+        <p class="ld-places">The Golden Gate, Alcatraz, the Bay Bridge &amp; the Marin Headlands</p>
+      </div>
+      <div class="ld-bridge" aria-hidden="true">
+        <div class="ld-bridge-base"></div>
+        <div id="loading-bar-fill" class="ld-bridge-lit"></div>
+        <div class="ld-fog"></div>
+      </div>
+      <div class="ld-foot">
+        <span id="loading-stage-text">Preparing the city…</span>
+        <span id="loading-pct-text">0%</span>
+      </div>
+    </div>
+    <script>
+      // Line drawing of the Golden Gate: drawn twice, the orange copy is revealed by load progress.
+      (function () {
+        var deck = 228, top = 40, tl = 380, tr = 820, sag = 394;
+        var p = [];
+        p.push('<path class="hill" d="M-2000 232 H0 C60 226 130 222 210 228 M700 228 C800 196 880 150 980 156 C1060 160 1110 196 1200 188 C1600 172 2400 200 3200 214"/>');
+        [tl, tr].forEach(function (x) {
+          p.push('<path class="tower" d="M' + (x - 9) + ' ' + top + 'V' + (deck + 44) + 'M' + (x + 9) + ' ' + top + 'V' + (deck + 44) + '"/>');
+          [60, 104, 150, 196].forEach(function (y) {
+            p.push('<path d="M' + (x - 9) + ' ' + y + 'H' + (x + 9) + '"/>');
+          });
+        });
+        p.push('<path class="cable" d="M' + tl + ' ' + (top + 2) + 'Q600 ' + sag + ' ' + tr + ' ' + (top + 2) + '"/>');
+        p.push('<path class="cable" d="M40 ' + (deck - 4) + 'Q300 220 ' + tl + ' ' + (top + 2) + '"/>');
+        p.push('<path class="cable" d="M' + tr + ' ' + (top + 2) + 'Q900 220 1160 ' + (deck - 4) + '"/>');
+        var s = '';
+        for (var k = 1; k < 24; k++) {
+          var t = k / 24, x = tl + (tr - tl) * t, y = top + 2 + 2 * t * (1 - t) * (sag - top - 2);
+          s += 'M' + x.toFixed(1) + ' ' + y.toFixed(1) + 'V' + deck;
+        }
+        for (var j = 1; j < 9; j++) {
+          var u = j / 9, a = 1 - u;
+          var lx = a * a * 40 + 2 * u * a * 300 + u * u * tl, ly = a * a * (deck - 4) + 2 * u * a * 220 + u * u * (top + 2);
+          var rx = a * a * tr + 2 * u * a * 900 + u * u * 1160, ry = a * a * (top + 2) + 2 * u * a * 220 + u * u * (deck - 4);
+          s += 'M' + lx.toFixed(1) + ' ' + ly.toFixed(1) + 'V' + deck + 'M' + rx.toFixed(1) + ' ' + ry.toFixed(1) + 'V' + deck;
+        }
+        p.push('<path class="hanger" d="' + s + '"/>');
+        p.push('<path class="deck" d="M-2000 ' + deck + 'H3200M-2000 ' + (deck + 7) + 'H3200"/>');
+        p.push('<path class="water" d="M-2000 262H3200M-2000 276H3200M-2000 292H3200"/>');
+        var svg = '<svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax meet">' + p.join('') + '</svg>';
+        var base = document.querySelector('.ld-bridge-base');
+        var lit = document.getElementById('loading-bar-fill');
+        if (base) base.innerHTML = svg;
+        if (lit) lit.innerHTML = svg;
+      })();
+    </script>
+    <div id="canvas-container"></div>
+    <canvas id="label-canvas"></canvas>
+    <div id="hud-root"></div>
+    <script>
+      // The atmosphere LUT generator chains idle callbacks without a timeout; a busy
+      // render loop never goes idle, so it would starve and leave the sky black.
+      if (window.requestIdleCallback) {
+        const nativeIdle = window.requestIdleCallback.bind(window);
+        window.requestIdleCallback = (cb, opts) =>
+          nativeIdle(cb, Object.assign({ timeout: 50 }, opts));
+      } else {
+        window.requestIdleCallback = (cb) => {
+          const start = performance.now();
+          return setTimeout(() => {
+            cb({
+              didTimeout: false,
+              timeRemaining: () => Math.max(0, 50 - (performance.now() - start)),
+            });
+          }, 1);
+        };
+      }
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
